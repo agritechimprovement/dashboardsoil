@@ -75,94 +75,6 @@ def fetch_and_update_data():
                 waktu = device_info.get('waktu', None)
                 tanggalupdate = device_info.get('tanggalupdate', None)
                 waktuupdate = device_info.get('waktuupdate', None)
-                jenis = device_info.get('jenis', None)
-
-                kritis = 0
-                mad = 0
-                lapang = 0
-
-                if jenis == "lempungliatberpasir":
-                    kritis = 19
-                    mad = 27
-                    lapang = 35
-                elif jenis == "lempungberpasir":
-                    kritis = 19
-                    mad = 27
-                    lapang = 35
-                elif jenis == "lempungberliat":
-                    kritis = 28
-                    mad = 33
-                    lapang = 38
-                elif jenis == "lempungberdebu":
-                    kritis = 14
-                    mad = 25
-                    lapang = 36
-                elif jenis == "lempung":
-                    kritis = 14
-                    mad = 25
-                    lapang = 36
-                elif jenis == "pasirberdebu":
-                    kritis = 6
-                    mad = 12
-                    lapang = 18
-                elif jenis == "liatberdebu":
-                    kritis = 30
-                    mad = 35
-                    lapang = 40
-                elif jenis == "liatberpasir":
-                    kritis = 16
-                    mad = 26
-                    lapang = 35
-                elif jenis == "liat":
-                    kritis = 30
-                    mad = 35
-                    lapang = 40
-
-                x1 = lapang - ((lapang - mad)/2)
-                x2 = device_info.get('nilai', None)
-                x2 = float(x2)
-                
-                if (x1 < x2) or ((x1-x2) <= 1.7):
-                    tebalsiram = 0
-                else:
-                    tebalsiram = ((x1-x2) - 6.778 + (x2*0.165)) / 0.142
-
-                
-                if tebalsiram == 0:
-                    kecepatansiram = 0
-
-                elif tebalsiram < 8:
-                    kecepatansiram = 60
-                
-                elif tebalsiram >= 8 and tebalsiram < 10:
-                    kecepatansiram = 56 - ((tebalsiram - 8) * 5.5)
-
-                elif tebalsiram >= 10 and tebalsiram < 12:
-                    kecepatansiram = 45 - ((tebalsiram - 10) * 3.5)
-
-                elif tebalsiram >= 12 and tebalsiram < 18:
-                    kecepatansiram = 38 - ((tebalsiram - 12) * 2.167)
-
-                elif tebalsiram >= 18 and tebalsiram < 20:
-                    kecepatansiram = 25 - ((tebalsiram - 18) * 1)
-
-                elif tebalsiram >= 20 and tebalsiram < 22:
-                    kecepatansiram = 23 - ((tebalsiram - 20) * 1.5)
-                    
-                elif tebalsiram >= 22 and tebalsiram < 25:
-                    kecepatansiram = 20 - ((tebalsiram - 22) * 0.67)
-
-                elif tebalsiram >= 25 and tebalsiram < 27:
-                    kecepatansiram = 18 - ((tebalsiram - 25) * 0.5)
-                    
-                elif tebalsiram >= 27 and tebalsiram < 35:
-                    kecepatansiram = 17 - ((tebalsiram - 27) * 0.5)
-                
-                elif tebalsiram > 35:
-                    kecepatansiram = 10
-
-                else:
-                    kecepatansiram = 58.6661237785016 - (1.54234527687296 * tebalsiram)
 
                 if tanggal is None:
                     tanggal = '1970-01-01'
@@ -176,10 +88,10 @@ def fetch_and_update_data():
                 if nama.lower() in db_devices:
                     update_query = ("""
                         UPDATE device_data
-                        SET iddevice=%s, komoditi=%s, jenis=%s, wilayah=%s, lat=%s, longt=%s, baterai=%s, soilec=%s, suhutanah=%s, nilai=%s, nomoriot=%s, ket=%s, tanggal=%s, waktu=%s, tanggalupdate=%s, waktuupdate=%s, stasiun=%s, kondisi=%s, tebalsiram=%s, kecepatan=%s
+                        SET iddevice=%s, komoditi=%s, jenis=%s, wilayah=%s, lat=%s, longt=%s, baterai=%s, soilec=%s, suhutanah=%s, nilai=%s, nomoriot=%s, ket=%s, tanggal=%s, waktu=%s, tanggalupdate=%s, waktuupdate=%s, stasiun=%s, kondisi=%s
                         WHERE nama=%s
                     """)
-                    cursor.execute(update_query, (device_info.get('iddevice', 'NULL'), device_info.get('komoditi', 'NULL'), device_info.get('jenis', 'NULL'), device_info.get('wilayah', 'NULL'), device_info.get('lat', 'NULL'), device_info.get('long', 'NULL'), device_info.get('baterai', 'NULL'), device_info.get('soilec', 'NULL'), device_info.get('suhutanah', 'NULL'), device_info.get('nilai', 'NULL'), device_info.get('nomoriot', 'NULL'), device_info.get('ket', 'NULL'), tanggal, waktu, tanggalupdate, waktuupdate, get_nearest_station(get_location(gdf, float(device_info.get('lat', 'NULL')), float(device_info.get('long', 'NULL'))), stations), kondisi, tebalsiram, kecepatansiram, nama))
+                    cursor.execute(update_query, (device_info.get('iddevice', 'NULL'), device_info.get('komoditi', 'NULL'), device_info.get('jenis', 'NULL'), device_info.get('wilayah', 'NULL'), device_info.get('lat', 'NULL'), device_info.get('long', 'NULL'), device_info.get('baterai', 'NULL'), device_info.get('soilec', 'NULL'), device_info.get('suhutanah', 'NULL'), device_info.get('nilai', 'NULL'), device_info.get('nomoriot', 'NULL'), device_info.get('ket', 'NULL'), tanggal, waktu, tanggalupdate, waktuupdate, get_nearest_station(get_location(gdf, float(device_info.get('lat', 'NULL')), float(device_info.get('long', 'NULL'))), stations), kondisi, nama))
                     print(f"Updated device data for nama {nama}")
                 else:
                     insert_query = ("""
