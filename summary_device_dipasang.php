@@ -329,24 +329,23 @@
       <a href="index.php" class="btn btn-primary mx-2">Summary Total Device</a>
       <a href="summary_device_dilepas.php" class="btn btn-primary mx-2">Summary Device Dilepas</a>
   </div>          
+  
   <div class="table-container">
     <table id="customerTable" class="display">
       <thead>
         <tr>
           <th>Nama</th>
           <th>ID Device</th>
-          <th>Lokasi</th>
           <th>Komoditi</th>
           <th>Jenis</th>
+          <th>Nilai</th>
           <th>Keterangan</th>
-          <th>Wilayah</th>
+          <th>Wil</th>
           <th>Stasiun</th>
-          <th>Tanggal Pasang</th>
-<!--          <th>Waktu Pasang</th>-->
+          <th>Tgl Pasang</th>
           <th>Status</th>
-          <th>Tanggal Update</th>
-          <th>Waktu Update</th>
-          <th>Kondisi</th>
+          <th>Tgl Update</th>
+          <th>Jam</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -354,7 +353,7 @@
         <?php
           include 'config.php';
 
-          $sql = "SELECT d.nama, d.komoditi, d.jenis, d.iddevice, d.wilayah, d.waktuupdate AS waktu_update, d.tanggalupdate AS tanggal_update, d.ket, d.tanggal, d.waktu, d.stasiun, d.kondisi FROM device_data d WHERE `kondisi` LIKE 'dipasang'";
+          $sql = "SELECT d.nama, d.nilai, d.komoditi, d.jenis, d.iddevice, d.wilayah, d.waktuupdate AS waktu_update, d.tanggalupdate AS tanggal_update, d.ket, d.tanggal, d.waktu, d.stasiun, d.kondisi FROM device_data d WHERE `kondisi` LIKE 'dipasang'";
           $result = $conn->query($sql);
 
           if ($result->num_rows > 0) {
@@ -383,9 +382,10 @@
                   echo "<tr>";
                   echo "<td>" . $row["nama"] . "</td>";
                   echo "<td>" . $row["iddevice"]  . "</td>";
-                  echo "<td>" . $lokasi . "</td>";
+                  // echo "<td>" . $lokasi . "</td>";
                   echo "<td>" . $row["komoditi"] . "</td>";
                   echo "<td>" . $row["jenis"] . "</td>";
+                  echo "<td>" . substr($row["nilai"], 0, -1) . "%" . "</td>";
                   echo "<td>" . $row["ket"] . "</td>";
                   echo "<td>" . $row["wilayah"] . "</td>";
                   echo "<td>" . $row["stasiun"] . "</td>";
@@ -394,7 +394,7 @@
                   echo "<td><div class='status-indicator $status_class'></div> " . $status . "</td>";
                   echo "<td>" . $tanggal_update . "</td>";
                   echo "<td>" . $waktu_update . "</td>";
-                  echo "<td>" . $row["kondisi"] . "</td>";
+                  // echo "<td>" . $row["kondisi"] . "</td>";
                   echo "<td><a class='btn btn-primary' href='view_history.php?nama=" . $row["nama"] . "'>Lihat</a></td>";
                   echo "</tr>";
               }
@@ -407,6 +407,8 @@
       </tbody>
     </table>
   </div>
+
+
   <script src="js/jquery-3.6.0.min.js"></script>
   <script src="js/jquery.dataTables.min.js"></script>
   <script>
