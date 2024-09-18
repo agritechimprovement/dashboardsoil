@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +37,9 @@
   <div class="navbar">
     <img src="image/logo.png" alt="Logo" />
     <h1>Agritech</h1>
+  </div>
+  <div class="logout-container" style="position: absolute; top: 40px; right: 10px;">
+    <a href="logout.php" class="btn btn-danger">Logout</a>
   </div>
   <div class="container">
     <div class="summary-container-title justify-content-center align-items-center">
